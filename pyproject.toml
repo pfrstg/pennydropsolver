@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pennydropsolver"
+version = "0.1.0"
+description = "Solver for simple Penny Drop game"
+authors = ["Patrick Riley <patriley@gmail.com>"]
+license = "Apache V2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^1.26.2"
+pandas = "^2.1.4"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
