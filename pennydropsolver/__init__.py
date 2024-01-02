@@ -1,3 +1,5 @@
+# Copyright 2024 Patrick Riley <patriley@gmail.com>
+
 from collections import defaultdict, namedtuple
 from enum import Enum
 
@@ -134,7 +136,14 @@ class ValueTable:
         if state.player == 0:
             best_act_idx = np.argmin(action_values)
         else:
-            best_act_idx = np.argmax(action_values)
+            # The other playes will operate like player 0 in terms of which action to pick
+            mod_state = GameState(
+                num_out=state.num_out, player=0, is_first=state.is_first
+            )
+            mod_action_values = []
+            for act in actions:
+                mod_action_values.append(self.get_action_value(mod_state, act))
+            best_act_idx = np.argmin(mod_action_values)
         self.values[state_idx] = action_values[best_act_idx]
         return old_val, self.values[state_idx]
 
@@ -148,7 +157,7 @@ class ValueTable:
                 total_abs_change += change
                 max_abs_change = max(max_abs_change, change)
             print(f"{total_abs_change=} {max_abs_change=}")
-            if total_abs_change <= 1e-6:
+            if total_abs_change <= 1e-8:
                 break
 
     def to_dataframe(self):
